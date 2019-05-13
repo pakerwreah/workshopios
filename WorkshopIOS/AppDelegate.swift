@@ -9,6 +9,10 @@
 import UIKit
 import IQKeyboardManagerSwift
 
+extension Notification.Name {
+    static let RecarregarClientes = Notification.Name("RecarregarClientes")
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -29,9 +33,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Enables IQ keyboard manager
         IQKeyboardManager.shared.enable = true
 
+        more()
+
         return true
     }
 
+    func more() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            let insert = webservice.prefix(2)
+            webservice = Array(webservice.dropFirst(2))
+            tb_clientes.append(contentsOf: insert)
+
+            NotificationCenter.default.post(name: .RecarregarClientes, object: nil)
+
+            if !webservice.isEmpty {
+                self.more()
+            }
+        }
+    }
 }
 
 extension UIColor {

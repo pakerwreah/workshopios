@@ -8,6 +8,10 @@
 
 import UIKit
 
+class MaxLengthTextField: UITextField {
+    @IBInspectable var maxLength: Int = -1
+}
+
 class CadastroViewController: UIViewController {
 
     @IBOutlet weak var txt_nome: UITextField!
@@ -40,6 +44,24 @@ class CadastroViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(alert, animated: true, completion: nil)
         }
+    }
+}
+
+extension CadastroViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+
+        if let maxLengthTF = textField as? MaxLengthTextField {
+            let maxLength = maxLengthTF.maxLength
+            if maxLength >= 0 {
+                return updatedText.count <= maxLength
+            }
+        }
+
+        return true
     }
 }
 
