@@ -1,0 +1,15 @@
+## Mac OS X
+*.DS_Store
+
+## Build generated
+build/
+
+## Various settings
+project.xcworkspace/
+xcuserdata/
+
+# CocoaPods
+Pods/
+
+*.iml
+.idea
